@@ -6,7 +6,7 @@
 /*   By: mbenhass <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:27:33 by mbenhass          #+#    #+#             */
-/*   Updated: 2019/01/08 16:56:17 by mbenhass         ###   ########.fr       */
+/*   Updated: 2019/02/04 15:43:42 by mbenhass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-int main(int ac, char **av)
+int main(void)
 {
 	int fd;
 	char *line;

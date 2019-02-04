@@ -1,0 +1,8 @@
+*.out
+Libft/objs/*.o
+Libft/*.a
+*.swp
+*.o
+GNLTests
+get_next_line.*
+libft
