@@ -26,7 +26,7 @@ WHITE = \033[0m
 
 all : $(NAME)
 
-$(NAME) : $(OBJ) lib
+$(NAME) : lib $(OBJ) 
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) $(OBJ) -o $@
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) testerror.c get_next_line.o -o error.out
 
@@ -41,13 +41,16 @@ else
 	@make -C libft re && echo "$(GREEN)libft compiled successfully$(WHITE)"
 endif
 
+run : 
+	@sh checker.sh ${ARGS}
+
 clean :
 	@make -C libft clean
 	@rm -f $(OBJ) && echo "$(RED)objects successfully deleted$(WHITE)"
 
 fclean : clean
 	@make -C libft fclean
-	@rm -f $(NAME) error.out && echo "$(RED)$(NAME) deleted$(WHITE)"
+	@rm -f $(NAME) error.out && echo "$(RED)$(NAME) error.out deleted$(WHITE)"
 
 re : fclean all
 
