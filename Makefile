@@ -9,10 +9,11 @@ CPPFLAGS = -Ilibft/includes
 
 LDFLAGS = -Llibft
 LDLIBS = -lft
+LDLIB = libft.a
 
 NAME = main.out
 
-SRC_NAME = get_next_line.c
+SRC_NAME = get_next_line.c main.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
@@ -25,13 +26,20 @@ WHITE = \033[0m
 
 all : $(NAME)
 
-$(NAME) : $(OBJ)
-	@make -C libft re && echo "$(GREEN)libft compiled successfully$(WHITE)"
-	@$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) main.c $(SRC) -o $@
-	@$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) testerror.c $(SRC) -o error.out
+$(NAME) : $(OBJ) lib
+	@$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) $(OBJ) -o $@
+	@$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) testerror.c get_next_line.o -o error.out
+
 %.o: %.c
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 	@echo "$(GREEN)$@$(WHITE)"
+
+lib : 
+ifeq ($(findstring libft.a,$(shell ls libft)),$(LDLIB))
+	@echo "$(GREEN)libft already compiled.$(WHITE)"
+else
+	@make -C libft re && echo "$(GREEN)libft compiled successfully$(WHITE)"
+endif
 
 clean :
 	@make -C libft clean
@@ -39,11 +47,11 @@ clean :
 
 fclean : clean
 	@make -C libft fclean
-	@rm -f $(NAME) && echo "$(RED)$(NAME) deleted$(WHITE)"
+	@rm -f $(NAME) error.out && echo "$(RED)$(NAME) deleted$(WHITE)"
 
 re : fclean all
 
-.PHONY : all clean fclean re
+.PHONY : all clean fclean re lib
 
 norme:
 	norminette $(SRC)

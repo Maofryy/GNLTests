@@ -7,11 +7,17 @@ die "program lignes nombre retourligne" unless (scalar(@ARGV) == 3);
 
 my ($l, $n, $o) = @ARGV;
 
+my $k = 0;
+
 for (my $i = 0; $i < $l; $i++) 
 {
 	for (my $j = 0; $j < $n; $j++) 
 	{
-		print(chr(int(rand(92)) + 33))
+		$k = int(rand(92)) + 33;
+		if ( $k == 96 || $k == 39 || $k == 34){
+			$k++;
+		}
+		print(chr($k));
 	}
 	if ($o == 1) {
 		print "\n";
