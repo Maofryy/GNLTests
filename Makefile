@@ -43,7 +43,10 @@ else
 endif
 
 run : 
-	@sh checker.sh ${ARGS}
+	@sh checker.sh
+
+vrun :
+	@make ARGS="-v" run
 
 clean :
 	@make -C libft clean
