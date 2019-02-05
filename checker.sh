@@ -30,17 +30,17 @@ check_one () {
 	fi
 
 	if [ "$3" -eq 1 ];then
-		T="avec"
+		T="with"
 	elif [ "$3" -eq 0 ]
 	then
-		T="sans"
+		T="without"
 	fi
 
 	if [[ "$R" != "$S" ]]; then
-		echo  "${RED}Main Test $1 $2 $T \\\n : [KO] Difference between ${NC}$R${RED} and ${NC}$S"
+		echo  "${RED}Main Test $1 line(s) ${2} characters $T \\\n : [KO] Difference between ${NC}$R${RED} and ${NC}$S"
 		#return 1
 	else
-		echo "${GRN}Main Test $1 $2 $T \\\n : [OK]${NC}"
+		echo "${GRN}Main Test $1 line(s) $2 characters $T \\\n : [OK]${NC}"
 		#return 0
 	fi
 }
@@ -96,23 +96,28 @@ check_ret () {
 	fi
 
 	if [ "$3" -eq 1 ];then
-		T="avec"
+		T="with"
 	elif [ "$3" -eq 0 ]
 	then
-		T="sans"
+		T="without"
 	fi
 
 	if [[ "$R" != $4 ]]; then
-		echo  "${RED}Return test $1 $2 $T \\\n : [KO] Returned ${NC}$R${RED} when expecting ${NC}$4"
+		echo  "${RED}Return test $1 line(s) $2 characters, read $5 time(s) : [KO] Returned ${NC}$R${RED} when expecting ${NC}$4"
 	else
-		echo "${GRN}Return test $1 $2 $T \\\n : [OK] Returned $R when expecting $4${NC}"
+		echo "${GRN}Return test $1 line(s) $2 characters, read $5 time(s) : [OK] Returned $R when expecting $4${NC}"
 	fi
 }
 echo "\n--------------------------------------------------------------\n"
 check_ret 1 16 1 1 1 $1
-check_ret 1 16 0 0 2 $1
+check_ret 1 16 1 0 2 $1
+check_ret 3 8 1 1 2 $1
+check_ret 3 8 1 0 4 $1
 
-
+echo "\nTesting errors, invalid fd and no rights on file :\n"
+chmod 000 file
+echo "Should display permission denied :"
+check_ret 1 8 1 -1 1 $1 
 #echo "Testing with a illegal file descriptor : (should return -1)"
 R=$(./error.out)
 if [ "$R" != -1 ];then
@@ -120,4 +125,6 @@ if [ "$R" != -1 ];then
 else
 	echo "${GRN}Return test : [OK] Returned $R when expecting -1${NC}"
 fi
+
+chmod 777 file
 rm -f file ret
