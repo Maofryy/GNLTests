@@ -1,5 +1,9 @@
 #!/bin/bash
 
+RED='\033[0;31m'
+GRN='\033[0;32m'
+NC='\033[0m'
+
 check_one () {
 	if [ "$#" -ne 4 -a "$#" -ne 5 ]; then
 		echo "Illegal number of parameters"
@@ -25,11 +29,6 @@ check_one () {
 		cat -e ret
 	fi
 
-	RED='\033[0;31m'
-	GRN='\033[0;32m'
-	NC='\033[0m'
-
-
 	if [ "$3" -eq 1 ];then
 		T="avec"
 	elif [ "$3" -eq 0 ]
@@ -45,6 +44,7 @@ check_one () {
 		#return 0
 	fi
 }
+
 ran=
 lines=(1 2 $(( ( RANDOM % 20 )  + 1 )))
 chars=(8 16 4)
@@ -63,7 +63,7 @@ do
 	done
 done
 
-echo "${RED}!You may Have to check manually for empty files, or files with no newline! (Change the main)${NC}\n"
+echo "${RED}!You may Have to check manually for empty files, or files with no newline! (Change the main)\nAs you should see, the main adds a new line at each line so you should see in the output a \$ and none in the input.\nFor the empty files you might check yourself with a ${NC}./main.out empty_file${NC}\n"
 
 for j in 4 8 16
 do
@@ -73,4 +73,56 @@ done
 check_one 0 0 0 0 $1
 check_one 0 0 0 1 $1
 
+#Check for the return of get_next_line with testerror.out ?
+
+check_ret () {
+	if [ "$#" -ne 4 -a "$#" -ne 5 ]; then
+		echo "Illegal number of parameters"
+		echo "Usage : sh checker.sh [lines] [characters per line] [with (1) or without new line] [expected return 0/1/-1] [verbose]"
+		exit
+	fi
+
+	S0="$(sh rungen.sh $1 $2 $3 > file)"
+	S=$(cat file)
+	if [ "$4" -eq 1 ]; then
+		R0="$(./ret.out file > ret)"
+	elif [ "$4" -eq 0 ]
+	then
+		R0="$(cat file | ./ret.out | cat > ret)"
+	fi
+
+	R="$(cat ret)"
+
+	if [ "$5" == "-v" ];then
+		echo "Input :"
+		cat -e file
+		echo "\nOutput :"
+		cat ret
+	fi
+
+	if [ "$3" -eq 1 ];then
+		T="avec"
+	elif [ "$3" -eq 0 ]
+	then
+		T="sans"
+	fi
+
+	if [[ "$R" != $4 ]]; then
+		echo  "${RED}Test $1 $2 $T \\\n : [KO] Returned ${NC}$R${RED} when expecting ${NC}$4"
+	else
+		echo "${GRN}Test $1 $2 $T \\\n : [OK] Returned $R when expecting $4${NC}"
+	fi
+}
+
+check_ret 1 16 1 1 $1
+check_ret 1 16 0 0 $1
+
+
+#echo "Testing with a illegal file descriptor : (should return -1)"
+R=$(./error.out)
+if [ "$R" != -1 ];then
+	echo  "${RED}Error test : [KO] Returned ${NC}$R${RED} when expecting ${NC}-1"
+else
+	echo "${GRN}Error test: [OK] Returned $R when expecting -1${NC}"
+fi
 rm -f file ret

@@ -28,6 +28,7 @@ all : $(NAME)
 
 $(NAME) : lib $(OBJ) 
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) $(OBJ) -o $@
+	@$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) ret.c get_next_line.o -o ret.out
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) testerror.c get_next_line.o -o error.out
 
 %.o: %.c
@@ -50,7 +51,7 @@ clean :
 
 fclean : clean
 	@make -C libft fclean
-	@rm -f $(NAME) error.out && echo "$(RED)$(NAME) error.out deleted$(WHITE)"
+	@rm -f $(NAME) error.out ret.out && echo "$(RED)$(NAME) ret.out error.out deleted$(WHITE)"
 
 re : fclean all
 
