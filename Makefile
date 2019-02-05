@@ -46,7 +46,7 @@ run :
 	@sh checker.sh
 
 vrun :
-	@make ARGS="-v" run
+	@sh checker.sh -v
 
 clean :
 	@make -C libft clean
