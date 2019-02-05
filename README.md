@@ -1,12 +1,12 @@
 # Procedure de test 
-cp main.o ./testfiles/main.o
-cp testerror.o ./testfiles/.
-cd testfiles
+Copie des fichiers gnl.c gnl.h et libft/ dans le repo
+Suivre make && make run pour lancer
 
 # Exemple
-cat file1x8n
+make ARGS="-v" run
 
-cat file1x8n | ./main.o
+Need to re check the last part of the tests manually, empty files and files without lines,
+it should check it correctly but its not very clear
 
-./main.o file1x8n
 
+Thank you
