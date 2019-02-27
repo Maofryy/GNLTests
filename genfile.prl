@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-die "program lignes nombre retourligne" unless (scalar(@ARGV) == 3);
+die "usage : [nomnre de lignes] [nombre de char] [retourligne : 1/0]" unless (scalar(@ARGV) == 3);
 
 my ($l, $n, $o) = @ARGV;
 
